@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="域名输入错误｜即将跳转">
+  <main class="wrap">
+    <section class="card" role="alert" aria-live="polite">
+      <div class="badge">
+        <span class="dot" aria-hidden="true"></span>
+        域名输入错误提示
+      </div>
+
+      <h1>你来到了错误的网站：<span class="count" id="currentHost"></span></h1>
+
+      <p>
+        正确网站是：<strong>prts.wiki</strong>。你可能把它打成了 <strong>ptrs.wiki</strong>。
+      </p>
+
+      <div class="info">
+        <p>
+          将在 <strong class="count"><span id="sec">3</span></strong> 秒后自动跳转至：
+          <span class="count" id="targetUrlText">https://prts.wiki/</span>
+        </p>
+        <p class="sr-only" id="announce"></p>
+      </div>
+
+      <div class="row">
+        <a class="btn primary" id="goNow" href="https://prts.wiki/" rel="noopener noreferrer">立即跳转</a>
+        <button class="btn" id="cancel" type="button">取消自动跳转</button>
+        <a class="btn" id="copy" href="#" role="button">复制正确链接</a>
+      </div>
+    </section>
+
+    <footer>
+      这是一个提示页面，不提供任何内容服务。请以浏览器地址栏显示的域名为准。
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      const TARGET = "https://prts.wiki/";
+      const currentHostEl = document.getElementById("currentHost");
+      const secEl = document.getElementById("sec");
+      const announceEl = document.getElementById("announce");
+      const goNowEl = document.getElementById("goNow");
+      const cancelBtn = document.getElementById("cancel");
+      const copyEl = document.getElementById("copy");
+
+      // 显示当前访问的域名（含端口）
+      currentHostEl.textContent = location.host || "（未知）";
+
+      // 保留路径 + 查询参数 + hash，更"无感"地跳到对应页面
+      const dest = TARGET.replace(/\/$/, "") + location.pathname + location.search + location.hash;
+      goNowEl.href = dest;
+      document.getElementById("targetUrlText").textContent = dest;
+
+      let remaining = 3;
+      let timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          location.replace(dest);
+          return;
+        }
+        secEl.textContent = String(remaining);
+        announceEl.textContent = `将在 ${remaining} 秒后跳转至正确网站。`;
+      }, 1000);
+
+      cancelBtn.addEventListener("click", () => {
+        clearInterval(timer);
+        cancelBtn.textContent = "已取消自动跳转";
+        cancelBtn.disabled = true;
+        announceEl.textContent = `已取消自动跳转。你可以点击"立即跳转"。`;
+      });
+
+      copyEl.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(dest);
+          copyEl.textContent = "已复制";
+          setTimeout(() => (copyEl.textContent = "复制正确链接"), 1200);
+        } catch {
+          // 兼容性兜底：提示用户手动复制
+          alert("复制失败，请手动复制链接：\n" + dest);
+        }
+      });
+    })();
+  </script>
+</Layout>
