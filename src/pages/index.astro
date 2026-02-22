@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const canonicalHost = 'prts.wiki';
+const canonicalOrigin = `https://${canonicalHost}`;
 ---
 
-<Layout title="域名输入错误｜即将跳转">
+<Layout title="域名输入错误提示" description="你访问了错误域名，请前往 prts.wiki。">
   <main class="wrap">
     <section class="card" role="alert" aria-live="polite">
       <div class="badge">
@@ -10,23 +13,21 @@ import Layout from '../layouts/Layout.astro';
         域名输入错误提示
       </div>
 
-      <h1>你来到了错误的网站：<span class="count" id="currentHost"></span></h1>
+      <h1>你来到了错误的网站：<span class="count" id="currentHost">（检测中）</span></h1>
 
       <p>
-        正确网站是：<strong>prts.wiki</strong>。你可能把它打成了 <strong>ptrs.wiki</strong>。
+        正确网站是：<strong>{canonicalHost}</strong>。你可能把它打成了 <strong>ptrs.wiki</strong>。
       </p>
 
       <div class="info">
         <p>
-          正确网址：
-          <span class="count" id="targetUrlText">https://prts.wiki/</span>
+          建议访问：
+          <span class="count" id="targetUrlText">{canonicalOrigin}/</span>
         </p>
-        <p class="sr-only" id="announce"></p>
       </div>
 
       <div class="row">
-        <a class="btn primary" id="goNow" href="https://prts.wiki/" rel="noopener noreferrer">立即跳转</a>
-        <button class="btn" id="cancel" type="button">取消自动跳转</button>
+        <a class="btn primary" id="goNow" href={canonicalOrigin} rel="noopener noreferrer">前往正确网站</a>
         <a class="btn" id="copy" href="#" role="button">复制正确链接</a>
       </div>
     </section>
@@ -37,6 +38,31 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script>
-    !function(){var a="https://prts.wiki/",b=document.getElementById("currentHost"),c=document.getElementById("goNow"),d=document.getElementById("cancel"),e=document.getElementById("copy"),f=document.getElementById("targetUrlText"),g=a.replace(/\/$/,"")+location.pathname+location.search+location.hash;b.textContent=location.host||"（未知）",c.href=g,f.textContent=g,d.addEventListener("click",function(){d.textContent="已取消自动跳转",d.disabled=!0}),e.addEventListener("click",async function(a){a.preventDefault();try{await navigator.clipboard.writeText(g),e.textContent="已复制",setTimeout(function(){e.textContent="复制正确链接"},1200)}catch(a){alert("复制失败，请手动复制链接：\n"+g)}})}();
+    (() => {
+      const canonicalOrigin = 'https://prts.wiki';
+      const currentHostEl = document.getElementById('currentHost');
+      const goNowEl = document.getElementById('goNow');
+      const copyEl = document.getElementById('copy');
+      const targetUrlTextEl = document.getElementById('targetUrlText');
+
+      const destination = `${canonicalOrigin}${location.pathname}${location.search}${location.hash}`;
+
+      if (currentHostEl) currentHostEl.textContent = location.host || '（未知）';
+      if (goNowEl) goNowEl.setAttribute('href', destination);
+      if (targetUrlTextEl) targetUrlTextEl.textContent = destination;
+
+      copyEl?.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try {
+          await navigator.clipboard.writeText(destination);
+          copyEl.textContent = '已复制';
+          setTimeout(() => {
+            copyEl.textContent = '复制正确链接';
+          }, 1200);
+        } catch {
+          alert(`复制失败，请手动复制链接：\n${destination}`);
+        }
+      });
+    })();
   </script>
 </Layout>
