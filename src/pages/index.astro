@@ -18,7 +18,7 @@ import Layout from '../layouts/Layout.astro';
 
       <div class="info">
         <p>
-          将在 <strong class="count"><span id="sec">3</span></strong> 秒后自动跳转至：
+          正确网址：
           <span class="count" id="targetUrlText">https://prts.wiki/</span>
         </p>
         <p class="sr-only" id="announce"></p>
@@ -37,53 +37,6 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script>
-    (function () {
-      const TARGET = "https://prts.wiki/";
-      const currentHostEl = document.getElementById("currentHost");
-      const secEl = document.getElementById("sec");
-      const announceEl = document.getElementById("announce");
-      const goNowEl = document.getElementById("goNow");
-      const cancelBtn = document.getElementById("cancel");
-      const copyEl = document.getElementById("copy");
-
-      // 显示当前访问的域名（含端口）
-      currentHostEl.textContent = location.host || "（未知）";
-
-      // 保留路径 + 查询参数 + hash，更"无感"地跳到对应页面
-      const dest = TARGET.replace(/\/$/, "") + location.pathname + location.search + location.hash;
-      goNowEl.href = dest;
-      document.getElementById("targetUrlText").textContent = dest;
-
-      let remaining = 3;
-      let timer = setInterval(() => {
-        remaining -= 1;
-        if (remaining <= 0) {
-          clearInterval(timer);
-          location.replace(dest);
-          return;
-        }
-        secEl.textContent = String(remaining);
-        announceEl.textContent = `将在 ${remaining} 秒后跳转至正确网站。`;
-      }, 1000);
-
-      cancelBtn.addEventListener("click", () => {
-        clearInterval(timer);
-        cancelBtn.textContent = "已取消自动跳转";
-        cancelBtn.disabled = true;
-        announceEl.textContent = `已取消自动跳转。你可以点击"立即跳转"。`;
-      });
-
-      copyEl.addEventListener("click", async (e) => {
-        e.preventDefault();
-        try {
-          await navigator.clipboard.writeText(dest);
-          copyEl.textContent = "已复制";
-          setTimeout(() => (copyEl.textContent = "复制正确链接"), 1200);
-        } catch {
-          // 兼容性兜底：提示用户手动复制
-          alert("复制失败，请手动复制链接：\n" + dest);
-        }
-      });
-    })();
+    !function(){var a="https://prts.wiki/",b=document.getElementById("currentHost"),c=document.getElementById("goNow"),d=document.getElementById("cancel"),e=document.getElementById("copy"),f=document.getElementById("targetUrlText"),g=a.replace(/\/$/,"")+location.pathname+location.search+location.hash;b.textContent=location.host||"（未知）",c.href=g,f.textContent=g,d.addEventListener("click",function(){d.textContent="已取消自动跳转",d.disabled=!0}),e.addEventListener("click",async function(a){a.preventDefault();try{await navigator.clipboard.writeText(g),e.textContent="已复制",setTimeout(function(){e.textContent="复制正确链接"},1200)}catch(a){alert("复制失败，请手动复制链接：\n"+g)}})}();
   </script>
 </Layout>
