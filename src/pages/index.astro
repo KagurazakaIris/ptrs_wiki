@@ -29,6 +29,7 @@ const canonicalOrigin = `https://${canonicalHost}`;
       <div class="row">
         <a class="btn primary" id="goNow" href={canonicalOrigin} rel="noopener noreferrer">前往正确网站</a>
         <a class="btn" id="copy" href="#" role="button">复制正确链接</a>
+        <a class="btn" id="github" href="#" role="button">前往 GitHub 仓库</a>
       </div>
     </section>
 
@@ -40,8 +41,10 @@ const canonicalOrigin = `https://${canonicalHost}`;
   <script>
     (() => {
       const canonicalOrigin = 'https://prts.wiki';
+      const githubRepo = 'https://github.com/KagurazakaIris/ptrs_wiki';
       const currentHostEl = document.getElementById('currentHost');
       const goNowEl = document.getElementById('goNow');
+      const goGithubRepo = document.getElementById('github');
       const copyEl = document.getElementById('copy');
       const targetUrlTextEl = document.getElementById('targetUrlText');
 
@@ -49,6 +52,7 @@ const canonicalOrigin = `https://${canonicalHost}`;
 
       if (currentHostEl) currentHostEl.textContent = location.host || '（未知）';
       if (goNowEl) goNowEl.setAttribute('href', destination);
+      if (goGithubRepo) goGithubRepo.setAttribute('href',githubRepo)
       if (targetUrlTextEl) targetUrlTextEl.textContent = destination;
 
       copyEl?.addEventListener('click', async (event) => {
