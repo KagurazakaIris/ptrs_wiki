@@ -5,5 +5,5 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src https://count.getloli.com; connect-src 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'unsafe-inline'; img-src data: https://count.getloli.com; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'
 
