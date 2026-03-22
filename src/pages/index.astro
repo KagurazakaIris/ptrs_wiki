@@ -36,7 +36,8 @@ const canonicalOrigin = `https://${canonicalHost}`;
     <footer>
       这是一个提示页面，不提供任何内容服务。请以浏览器地址栏显示的域名为准。
       <div class="counter">
-        <img src="https://count.getloli.com/@ptrs.wiki?name=ptrs.wiki&theme=gelbooru&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="visitor counter" />
+        <img id="counterImg" src="https://count.getloli.com/@ptrs.wiki?name=ptrs.wiki&theme=gelbooru&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="visitor counter" />
+        <span id="counterFallback" class="counter-fallback" hidden>计数器请求过于频繁，请稍后刷新页面查看</span>
       </div>
     </footer>
   </main>
@@ -70,6 +71,15 @@ const canonicalOrigin = `https://${canonicalHost}`;
           alert(`复制失败，请手动复制链接：\n${destination}`);
         }
       });
+
+      const counterImg = document.getElementById('counterImg');
+      const counterFallback = document.getElementById('counterFallback');
+      if (counterImg && counterFallback) {
+        counterImg.addEventListener('error', () => {
+          counterImg.hidden = true;
+          counterFallback.hidden = false;
+        });
+      }
     })();
   </script>
 </Layout>
