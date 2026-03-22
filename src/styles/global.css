@@ -135,3 +135,12 @@ footer {
   color: var(--muted);
   text-align: center;
 }
+
+footer .counter {
+  margin-top: 8px;
+}
+
+footer .counter img {
+  display: inline-block;
+  vertical-align: middle;
+}
