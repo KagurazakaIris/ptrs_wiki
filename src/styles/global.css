@@ -49,6 +49,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 22px 22px 18px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
 }
@@ -60,7 +61,7 @@ body {
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.06);
+  background: var(--btn);
   font-size: 14px;
   color: var(--muted);
 }
@@ -91,7 +92,7 @@ p {
   padding: 12px 14px;
   border-radius: 14px;
   border: 1px dashed var(--border);
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--card);
 }
 
 .row {
@@ -117,6 +118,18 @@ button.btn {
 a.btn:hover,
 button.btn:hover {
   background: var(--btnHover);
+}
+
+a.btn:focus-visible,
+button.btn:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0s !important;
+  }
 }
 
 a.primary {
